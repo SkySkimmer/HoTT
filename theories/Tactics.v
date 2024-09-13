@@ -61,13 +61,15 @@ Defined.
 
 (** Rewrite the recursive case after clean-up *)
 Lemma path_forall_recr_beta `{Funext} A B x0 P f g e Px
-: @transport (forall a : A, B a)
+  :
+  @paths ((fun f0 : forall a : A, B a => P f0 (f0 x0)) g)
+  (@transport (forall a : A, B a)
              (fun f => P f (f x0))
              f
              g
              (@path_forall _ _ _ _ _ e)
-             Px
-  = @transport (forall x : A, B x)
+             Px)
+ (@transport (forall x : A, B x)
                (fun x => P x (g x0))
                f
                g
@@ -77,7 +79,7 @@ Lemma path_forall_recr_beta `{Funext} A B x0 P f g e Px
                            (f x0)
                            (g x0)
                            (e x0)
-                           Px).
+                           Px)).
 Proof.
   etransitivity.
   - apply path_forall_recr_beta'.
